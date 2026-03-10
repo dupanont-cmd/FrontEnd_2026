@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<title>Arquivo Confuso da Computação</title>
+
+</head>
+
+<body class="bg-base-200">
+
+
+<div class="navbar bg-base-100 shadow-lg">
+  <div class="flex-1">
+    <a class="btn btn-ghost text-xl">Arquivo da Computação</a>
+  </div>
+
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1">
+      <li><a href="#pioneiros">Pioneiros</a></li>
+      <li><a href="#bugs">Bugs</a></li>
+      <li><a href="#internet">Internet</a></li>
+      <li><a href="#linguagens">Linguagens</a></li>
+      <li><a href="#formulario">Enviar</a></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="hero min-h-[40vh] bg-primary text-primary-content">
+  <div class="hero-content text-center">
+    <div>
+      <h1 class="text-5xl font-bold">
+        Arquivo (Quase) Perdido da Ciência da Computação
+      </h1>
+      <p class="py-6">
+        Uma coletânea caótica de fatos históricos, curiosos e inesperados.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<div class="container mx-auto p-10 space-y-16">
+
+
+<section id="pioneiros">
+
+<h2 class="text-3xl font-bold mb-6">Pioneiros da Computação</h2>
+
+<div class="grid md:grid-cols-2 gap-6">
+
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">Ada Lovelace</h2>
+    <p>Considerada a primeira programadora da história.</p>
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary">Ver mais</button>
+    </div>
+  </div>
+</div>
+
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">Alan Turing</h2>
+    <p>Criador do conceito de Máquina de Turing.</p>
+    <p class="italic">
+      "Podemos ver apenas um pouco do futuro..."
+    </p>
+  </div>
+</div>
+
+</div>
+
+<div class="alert mt-6">
+  <span>Curiosidade: Durante décadas o trabalho de Turing foi secreto.</span>
+</div>
+
+</section>
+
+
+<section id="bugs">
+
+<h2 class="text-3xl font-bold mb-6">Histórias de Bugs</h2>
+
+<div class="grid md:grid-cols-2 gap-6">
+
+<div class="card bg-base-100 shadow-lg">
+<div class="card-body">
+<h3 class="card-title">O Primeiro Bug</h3>
+<p>Uma mariposa encontrada em um computador em 1947.</p>
+</div>
+</div>
+
+<div class="card bg-base-100 shadow-lg">
+<div class="card-body">
+<h3 class="card-title">Vírus Creeper</h3>
+
+<pre class="bg-base-200 p-4 rounded-lg">
+I'M THE CREEPER : CATCH ME IF YOU CAN
+</pre>
+
+</div>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="internet">
+
+<h2 class="text-3xl font-bold mb-6">Curiosidades da Internet</h2>
+
+<ul class="timeline timeline-vertical">
+
+<li>
+<div class="timeline-start">1969</div>
+<div class="timeline-middle">🌐</div>
+<div class="timeline-end timeline-box">
+ARPANET é criada
+</div>
+</li>
+
+<li>
+<div class="timeline-start">1991</div>
+<div class="timeline-middle">💻</div>
+<div class="timeline-end timeline-box">
+Primeiro website criado por Tim Berners-Lee
+</div>
+</li>
+
+<li>
+<div class="timeline-start">2007</div>
+<div class="timeline-middle">📱</div>
+<div class="timeline-end timeline-box">
+Popularização dos smartphones
+</div>
+</li>
+
+</ul>
+
+</section>
+
+
+<section id="linguagens">
+
+<h2 class="text-3xl font-bold mb-6">Linguagens de Programação</h2>
+
+<div class="overflow-x-auto">
+
+<table class="table table-zebra">
+
+<thead>
+<tr>
+<th>Linguagem</th>
+<th>Ano</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>COBOL</td>
+<td>1959</td>
+</tr>
+
+<tr>
+<td>C</td>
+<td>1972</tr>
+</tr>
+
+<tr>
+<td>Python</td>
+<td>1991</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+<section id="formulario">
+
+<h2 class="text-3xl font-bold mb-6">Envie sua curiosidade</h2>
+
+<div class="card bg-base-100 shadow-xl max-w-xl">
+
+<div class="card-body">
+
+<div class="form-control">
+<label class="label">Nome</label>
+<input type="text" class="input input-bordered">
+</div>
+
+<div class="form-control">
+<label class="label">Email</label>
+<input type="email" class="input input-bordered">
+</div>
+
+<div class="form-control">
+<label class="label">Categoria</label>
+<select class="select select-bordered">
+<option>Pioneiros</option>
+<option>Bugs</option>
+<option>Internet</option>
+<option>Linguagens</option>
+</select>
+</div>
+
+<div class="form-control">
+<label class="label">Curiosidade</label>
+<textarea class="textarea textarea-bordered"></textarea>
+</div>
+
+<div class="card-actions justify-end">
+<button class="btn btn-primary">
+Enviar
+</button>
+</div>
+
+</div>
+</div>
+
+</section>
+
+</div>
+
+
+<footer class="footer footer-center p-6 bg-base-300 text-base-content">
+
+<div>
+<p>© 2026 Arquivo Confuso da Computação</p>
+<p>contato@computacao.com</p>
+</div>
+
+</footer>
+
+</body>
+</html>
