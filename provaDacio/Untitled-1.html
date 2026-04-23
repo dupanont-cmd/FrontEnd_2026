@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en">   
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>provaDacio</title>
+    <link rel="stylesheet" href="css/style.css">
+    </head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        font-size: medium;
+        
+    }
+    header {
+        font-weight: bold;
+        background-color: #333;
+        color: white;
+        padding: 10px 0;
+        text-align: center;
+    }
+    nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+    }
+    section {
+        padding: 20px;
+        background-color: white;
+        margin: 20px auto;
+        max-width: 800px;
+        border-radius: 8px;
+    }
+    img {
+        display: block;
+        margin: 20px auto;
+        max-width: 80%;
+        height: auto;
+    }
+    button {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: medium;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    <header>
+        <nav>
+            <h1>FIFA World Cup 2026</h1>
+            <a href="#CopaDoMundo">Copa Do Mundo</a>
+        </nav>
+    </header>
+   
+   <section id="CopaDoMundo">
+    <h2>🌍 Organização e Sedes</h2>   
+        <p>A Copa do Mundo FIFA de 2026 será a primeira edição realizada em três países: Estados Unidos, Canadá e México. Essa será também a maior Copa da história em número de cidades-sede, com partidas distribuídas por diversas regiões da América do Norte, ampliando o alcance global do torneio.</p>
+    <h3>⚽ Novo Formato</h3>
+        <p>O torneio contará com 48 seleções, em vez das tradicionais 32. As equipes serão divididas em grupos, aumentando o número total de jogos e dando mais oportunidades para países de diferentes continentes participarem. Essa mudança foi promovida pela FIFA para tornar a competição mais inclusiva e competitiva.</p>
+    <h4>🏆 Expectativas e Impacto</h4>
+        <p>A edição de 2026 promete ser uma das mais assistidas da história, com grande impacto econômico e cultural nos países-sede. Além disso, seleções tradicionais e emergentes devem protagonizar jogos de alto nível, aumentando ainda mais o interesse global pelo futebol e fortalecendo o esporte em novas regiões.</p>
+    </section>
+   <img id="tabela" src="img_.svg"></img>
+    <button onclick="mostrarTabela();">Clique aqui para uma surpresa!</button>
+
+    <script>
+        function mostrarTabela() {
+             document.getElementById("tabela").src = "tabela.png";
+        }
+    </script>
+</body>
+
