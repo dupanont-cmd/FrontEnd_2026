@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e8e8e8;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 550px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-right: 5px solid #d63031;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.form {
+    margin-bottom: 25px;
+}
+
+.field {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    font-size: 14px;
+    background: #fafafa;
+}
+
+input:focus {
+    outline: none;
+    border-color: #d63031;
+    background: white;
+}
+
+.grades-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 5px;
+}
+
+.grades-container .field {
+    margin-bottom: 0;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #555;
+}
+
+.result {
+    padding: 20px;
+    border-radius: 4px;
+    border-left: 4px solid;
+}
+
+.result.hidden {
+    display: none;
+}
+
+.result.aprovado {
+    background: #e3f2fd;
+    border-left-color: #1976d2;
+    color: #1565c0;
+}
+
+.result.exame {
+    background: #f1f8e9;
+    border-left-color: #689f38;
+    color: #558b2f;
+}
+
+.result.reprovado {
+    background: #ffebee;
+    border-left-color: #d32f2f;
+    color: #c62828;
+}
+
+.result-content p {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.student-info {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.average-info {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.status-info {
+    font-size: 13px;
+    margin-top: 8px;
+}
