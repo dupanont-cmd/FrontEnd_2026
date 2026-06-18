@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<!-- Arquivo principal da MatchStage. Abre direto no navegador, sem instalação. -->
+<html lang="pt-BR">
+<head>
+  
+  <!-- Suporte a acentos e ç -->
+  <meta charset="UTF-8" />
+
+  
+  <!-- Faz a página se adaptar ao tamanho do celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>MatchStage – Plataforma Inteligente de Conexão para Estágios</title>
+
+  
+  <!-- Bootstrap: dá o grid responsivo e o menu mobile -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  
+  <!-- Fonte Inter: usada em todo o site -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    
+    /* Paleta de cores do projeto — mude aqui e muda em tudo */
+    :root {
+      --navy:       #0F172A; /* azul escuro: fundo do hero e navbar */ 
+      --blue:       #2563EB; /* azul principal: botões e destaques */ 
+      --blue-light: #3B82F6; /* azul claro: hovers e badges */ 
+      --white:      #FFFFFF; /* branco puro */ 
+      --gray:       #F8FAFC; /* cinza claro: fundo de seções alternadas */ 
+      --text-muted: #64748B; /* cinza médio: textos secundários */ 
+      --border:     #E2E8F0; /* cinza bordas */ 
+    }
+
+    
+    /* Faz padding e border não aumentarem o tamanho dos elementos */
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif; 
+      color: var(--navy);               
+      background: var(--white);
+      margin: 0;                        
+    }
+
+    
+
+    /* Navbar fica grudada no topo ao rolar */
+    .navbar {
+      background: var(--navy);
+      padding: 1rem 0;
+      position: sticky; 
+      top: 0;
+      z-index: 100;     
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--white) !important; 
+      letter-spacing: -0.02em;        
+    }
+
+    
+    .navbar-brand span { color: var(--blue-light); }
+
+    .nav-link {
+      color: rgba(255,255,255,.75) !important; 
+      font-size: .9rem;
+      font-weight: 500;
+      transition: color .2s; 
+    }
+    .nav-link:hover { color: var(--white) !important; }
+
+    
+    .btn-nav {
+      background: var(--blue);
+      color: var(--white) !important;
+      border-radius: 6px;
+      padding: .4rem 1rem;
+      font-weight: 600;
+      font-size: .85rem;
+      border: none;
+      transition: background .2s;
+    }
+    .btn-nav:hover { background: var(--blue-light); color: var(--white) !important; }
+
+    
+    .navbar-toggler { border-color: rgba(255,255,255,.3); }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    
+
+    /* Seção de abertura — fundo escuro com brilho azul */
+    .hero {
+      background: var(--navy);
+      padding: 100px 0 80px; 
+      position: relative;    
+      overflow: hidden;      
+    }
+
+    
+    /* Efeito de brilho azul no lado direito do hero (decorativo) */
+    .hero::before {
+      content: '';           
+      position: absolute;
+      inset: 0;              
+      background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(37,99,235,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    
+    .hero-tag {
+      display: inline-block;
+      background: rgba(37,99,235,.2);      
+      color: var(--blue-light);
+      border: 1px solid rgba(37,99,235,.35);
+      border-radius: 50px;                 
+      padding: .3rem .9rem;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero h1 {
+      
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.18;         
+      letter-spacing: -0.03em;   
+      margin-bottom: 1.25rem;
+    }
+
+    
+    .hero h1 em {
+      font-style: normal;
+      color: var(--blue-light);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,.7); 
+      max-width: 520px;            
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    
+    /* Botão azul preenchido — ação principal */
+    .btn-primary-ms {
+      background: var(--blue);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: .75rem 1.75rem;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;   
+      display: inline-block;   
+      transition: background .2s, transform .15s;
+    }
+    .btn-primary-ms:hover {
+      background: var(--blue-light);
+      color: var(--white);
+      transform: translateY(-2px); 
+    }
+
+    
+    /* Botão transparente com borda — ação secundária */
+    .btn-outline-ms {
+      background: transparent;
+      color: rgba(255,255,255,.85);
+      border: 1.5px solid rgba(255,255,255,.3); 
+      border-radius: 8px;
+      padding: .75rem 1.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-outline-ms:hover {
+      border-color: var(--white); 
+      color: var(--white);
+    }
+
+    
+    /* Card de vidro à direita do hero com mockup de vagas */
+    .hero-visual {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(4px);
+    }
+
+    
+    .match-card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .85rem; 
+    }
+
+    .match-icon {
+      width: 38px; height: 38px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0; 
+    }
+
+    .match-card .title { font-size: .9rem; font-weight: 600; color: var(--white); }
+    .match-card .sub   { font-size: .75rem; color: rgba(255,255,255,.5); }
+
+    
+    .match-pct {
+      margin-left: auto; 
+      background: rgba(37,99,235,.3);
+      color: var(--blue-light);
+      border-radius: 50px;
+      padding: .2rem .65rem;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    
+
+    /* Espaço vertical padrão de todas as seções */
+    section { padding: 80px 0; } 
+
+    
+    /* Texto pequeno em maiúsculas acima dos títulos de seção */
+    .section-eyebrow {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .1em;  
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: .6rem;
+    }
+
+    
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.25rem); 
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 560px; 
+    }
+
+    
+
+    /* Fundo cinza para separar visualmente do hero */
+    .problema { background: var(--gray); } 
+
+    
+    /* Caixa branca com número grande (73%, 5x, etc.) */
+    .stat-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06); 
+    }
+    .stat-num {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: -0.03em; 
+    }
+    .stat-label { font-size: .88rem; color: var(--text-muted); margin-top: .25rem; }
+
+    
+    .pain-item {
+      display: flex;
+      gap: .85rem;
+      align-items: flex-start;     
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border); 
+    }
+    .pain-item:last-child { border-bottom: none; } 
+
+    
+    .pain-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      margin-top: .45rem; 
+      flex-shrink: 0;     
+    }
+    .pain-item p { margin: 0; font-size: .95rem; color: #334155; line-height: 1.6; }
+
+    
+
+    /* Card de cada pilar da solução — sobe ao passar o mouse */
+    .pilar-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      height: 100%; 
+      box-shadow: 0 2px 16px rgba(0,0,0,.05);
+      transition: box-shadow .25s, transform .25s; 
+    }
+    .pilar-card:hover {
+      box-shadow: 0 8px 32px rgba(37,99,235,.12); 
+      transform: translateY(-3px);                 
+    }
+
+    
+    .pilar-num {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+
+    
+    .pilar-icon {
+      width: 48px; height: 48px;
+      background: rgba(37,99,235,.1); 
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .pilar-card h5 { font-weight: 700; font-size: 1.05rem; margin-bottom: .6rem; }
+    .pilar-card p  { font-size: .9rem; color: var(--text-muted); line-height: 1.65; margin: 0; }
+
+    
+
+    /* Fundo cinza alternado para a seção de benefícios */
+    .beneficios { background: var(--gray); } 
+
+    /* Card de cada benefício */
+    .benefit-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      height: 100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04); 
+    }
+    .benefit-card .icon { font-size: 1.6rem; margin-bottom: .75rem; }
+    .benefit-card h6    { font-weight: 700; font-size: .95rem; margin-bottom: .4rem; }
+    .benefit-card p     { font-size: .87rem; color: var(--text-muted); margin: 0; line-height: 1.6; }
+
+    
+
+    
+    /* Fundo escuro para o mapa de empatia — contraste intencional */
+    .empatia { background: var(--navy); }
+    .empatia .section-title   { color: var(--white); }
+    .empatia .section-eyebrow { color: var(--blue-light); }
+    .empatia .section-sub     { color: rgba(255,255,255,.6); }
+
+    
+    .em-card {
+      background: rgba(255,255,255,.05); 
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px;
+      padding: 1.5rem;
+      height: 100%;
+    }
+
+    
+    .em-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      margin-bottom: .5rem;
+    }
+
+    .em-card h5 { color: var(--white); font-weight: 700; font-size: 1rem; margin-bottom: .75rem; }
+
+    
+    .em-card ul { list-style: none; padding: 0; margin: 0; }
+    .em-card ul li {
+      font-size: .87rem;
+      color: rgba(255,255,255,.65); 
+      padding: .3rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      line-height: 1.55;
+    }
+    .em-card ul li:last-child { border-bottom: none; }
+
+    
+    .em-card ul li::before { content: '→ '; color: var(--blue-light); font-weight: 700; }
+
+    
+
+    /* Seção final de chamada para ação — gradiente azul */
+    .cta-section {
+      
+      background: linear-gradient(135deg, var(--blue) 0%, #1D4ED8 100%);
+      padding: 80px 0;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: .75rem;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,.8);
+      font-size: 1.1rem;
+      max-width: 480px;
+      margin: 0 auto 2rem; 
+    }
+
+    
+    .btn-white {
+      background: var(--white);
+      color: var(--blue);
+      border: none;
+      border-radius: 8px;
+      padding: .8rem 2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: background .2s, transform .15s;
+    }
+    .btn-white:hover {
+      background: var(--gray);     
+      color: var(--blue);
+      transform: translateY(-2px);
+    }
+
+    
+    .btn-outline-white {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,.5);
+      border-radius: 8px;
+      padding: .8rem 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color .2s;
+    }
+    .btn-outline-white:hover { border-color: var(--white); color: var(--white); }
+
+    
+
+    /* Rodapé escuro com nome e ano */
+    footer {
+      background: var(--navy);
+      padding: 2.5rem 0;
+      border-top: 1px solid rgba(255,255,255,.08); 
+      text-align: center;
+    }
+    footer .brand     { font-weight: 800; color: var(--white); font-size: 1.15rem; }
+    footer .brand span { color: var(--blue-light); } 
+    footer .tagline   { font-size: .87rem; color: rgba(255,255,255,.45); margin: .4rem 0 .75rem; }
+    footer .copy      { font-size: .8rem; color: rgba(255,255,255,.3); } 
+
+    
+    /* Elementos começam invisíveis e sobem ao entrar na tela */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px); 
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: none; 
+    }
+
+    
+    /* Se o usuário preferir menos animações no SO, desativa tudo */
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+
+    
+    
+    .divider {
+      width: 48px; height: 3px;
+      background: var(--blue);
+      border-radius: 2px;
+      margin: 1rem 0 1.5rem;
+    }
+
+    
+    /* Botão "Cadastrar" na navbar — abre o modal de cadastro */
+    .btn-cadastro-nav {
+      background: transparent;
+      color: rgba(255,255,255,.85);
+      border: 1.5px solid rgba(255,255,255,.35);
+      border-radius: 6px;
+      padding: .4rem 1rem;
+      font-weight: 600;
+      font-size: .85rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .btn-cadastro-nav:hover {
+      border-color: var(--white);
+      color: var(--white);
+      background: rgba(255,255,255,.08);
+    }
+
+    
+    /* Fundo escuro que cobre a tela quando o modal está aberto */
+    .modal-overlay {
+      display: none;           
+      position: fixed;         
+      inset: 0;                
+      background: rgba(15,23,42,.75); 
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      backdrop-filter: blur(4px); 
+    }
+    .modal-overlay.ativo {
+      display: flex; 
+    }
+
+    
+    /* Caixa branca centralizada do modal */
+    .modal-box {
+      background: var(--white);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 92vh;        
+      overflow-y: auto;
+      padding: 2.5rem 2.25rem;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0,0,0,.35);
+      animation: modalEntrada .25s ease;
+    }
+
+    
+    /* Animação de entrada do modal — sobe levemente ao aparecer */
+    @keyframes modalEntrada {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    
+    /* Botão X no canto superior direito que fecha o modal */
+    .modal-fechar {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      background: var(--gray);
+      border: none;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      transition: background .2s, color .2s;
+    }
+    .modal-fechar:hover { background: var(--border); color: var(--navy); }
+
+    
+    .modal-titulo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      margin-bottom: .35rem;
+    }
+    .modal-sub {
+      font-size: .9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    
+    .modal-steps {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: 1.75rem;
+    }
+    .modal-step-dot {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      flex: 1;
+      transition: background .3s;
+    }
+    .modal-step-dot.ativo { background: var(--blue); }
+
+    
+    /* Grid com os dois cards de escolha: Estagiário e Empresa */
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    /* Card clicável de escolha de perfil */
+    .choice-card {
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s, transform .15s;
+      background: var(--white);
+    }
+    .choice-card:hover {
+      border-color: var(--blue);
+      background: #EFF6FF;
+      transform: translateY(-2px);
+    }
+    .choice-card.selecionado {
+      border-color: var(--blue);
+      background: #EFF6FF;
+    }
+    .choice-card .choice-icon {
+      font-size: 2.5rem;
+      margin-bottom: .75rem;
+      display: block;
+    }
+    .choice-card .choice-titulo {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--navy);
+      margin-bottom: .25rem;
+    }
+    .choice-card .choice-desc {
+      font-size: .8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    
+    /* Agrupa label + input + mensagem de erro */
+    .form-grupo {
+      margin-bottom: 1rem;
+    }
+    .form-grupo label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: .4rem;
+    }
+    
+    .form-grupo label .obrig {
+      color: #EF4444;
+      margin-left: 2px;
+    }
+    .form-grupo input,
+    .form-grupo select,
+    .form-grupo textarea {
+      width: 100%;
+      padding: .65rem .9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: .9rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--navy);
+      background: var(--white);
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      appearance: none; 
+    }
+    /* Anel azul aparece quando o campo está sendo preenchido */
+    .form-grupo input:focus,
+    .form-grupo select:focus,
+    .form-grupo textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12); 
+    }
+    
+    .form-grupo input.erro,
+    .form-grupo select.erro {
+      border-color: #EF4444;
+      box-shadow: 0 0 0 3px rgba(239,68,68,.1);
+    }
+    /* Mensagem vermelha de erro abaixo do campo — aparece se inválido */
+    .form-erro-msg {
+      font-size: .78rem;
+      color: #EF4444;
+      margin-top: .3rem;
+      display: none; 
+    }
+    .form-erro-msg.visivel { display: block; }
+
+    
+    .form-grupo select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%2364748B' d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right .75rem center;
+      background-size: 12px;
+      padding-right: 2.5rem;
+    }
+
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+    }
+    @media (max-width: 480px) {
+      .form-row { grid-template-columns: 1fr; }
+      .choice-grid { grid-template-columns: 1fr; }
+    }
+
+    
+    .form-check-custom {
+      display: flex;
+      align-items: flex-start;
+      gap: .6rem;
+      margin-top: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-check-custom input[type="checkbox"] {
+      width: 18px; height: 18px;
+      min-width: 18px;
+      margin-top: 1px;
+      accent-color: var(--blue); 
+      cursor: pointer;
+    }
+    .form-check-custom label {
+      font-size: .83rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .form-check-custom label a { color: var(--blue); text-decoration: none; }
+    .form-check-custom label a:hover { text-decoration: underline; }
+
+    
+    /* Botão azul principal dentro do modal */
+    .modal-btn-primary {
+      display: block;
+      width: 100%;
+      background: var(--blue);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: .8rem;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .modal-btn-primary:hover {
+      background: var(--blue-light);
+      transform: translateY(-1px);
+    }
+    .modal-btn-primary:disabled {
+      background: var(--border);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+    /* Botão "← Voltar" para ir à tela anterior */
+    .modal-btn-voltar {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: .88rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      padding: .5rem 0;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      margin-bottom: 1rem;
+      transition: color .2s;
+    }
+    .modal-btn-voltar:hover { color: var(--navy); }
+
+    
+    /* Tela verde de sucesso após o cadastro ser enviado */
+    .modal-sucesso {
+      text-align: center;
+      padding: 1rem 0;
+    }
+    .modal-sucesso .sucesso-icon {
+      width: 72px; height: 72px;
+      background: #DCFCE7;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1.5rem;
+    }
+    .modal-sucesso h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: .5rem;
+    }
+    .modal-sucesso p {
+      color: var(--text-muted);
+      font-size: .95rem;
+      line-height: 1.6;
+    }
+
+    
+    /* Barras coloridas que mostram a força da senha */
+    .senha-forca {
+      display: flex;
+      gap: .3rem;
+      margin-top: .4rem;
+    }
+    .senha-forca-barra {
+      height: 3px;
+      flex: 1;
+      border-radius: 2px;
+      background: var(--border);
+      transition: background .3s;
+    }
+    .senha-forca-texto {
+      font-size: .75rem;
+      color: var(--text-muted);
+      margin-top: .25rem;
+    }
+
+  </style>
+</head>
+<body>
+
+
+<!-- NAVBAR: menu no topo com links e botões de ação -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+
+    
+    <!-- Logo clicável no canto esquerdo -->
+    <a class="navbar-brand" href="#">Match<span>Stage</span></a>
+
+    
+    <!-- Botão hambúrguer: aparece só no celular para abrir o menu -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    
+    <!-- Menu de links: colapsa em celular, fica horizontal em desktop -->
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2 gap-1 mt-3 mt-lg-0">
+
+        
+        <li class="nav-item"><a class="nav-link" href="#problema">O Problema</a></li>
+        <li class="nav-item"><a class="nav-link" href="#solucao">Solução</a></li>
+        <li class="nav-item"><a class="nav-link" href="#beneficios">Benefícios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#empatia">Mapa de Empatia</a></li>
+
+        
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-nav nav-link" href="#cta">Acessar Plataforma</a>
+        </li>
+
+        
+        <li class="nav-item ms-lg-1 mt-2 mt-lg-0">
+          <button class="btn-cadastro-nav" onclick="abrirModal()">Cadastrar</button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!-- HERO: primeira coisa que o usuário vê ao entrar no site -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+
+      
+      <div class="col-lg-6">
+        
+        <div class="hero-tag">Plataforma Acadêmica</div>
+
+        
+        <h1>Conecte seu <em>perfil</em> às oportunidades certas</h1>
+
+        
+        <p>MatchStage analisa suas habilidades, interesses e formação para recomendar as vagas de estágio mais compatíveis com você — sem achismo, com inteligência.</p>
+
+        
+        <div class="d-flex flex-wrap gap-3">
+          <button onclick="abrirModal()" class="btn-primary-ms" style="border:none;cursor:pointer;">Criar minha conta</button>
+          <a href="#solucao" class="btn-outline-ms">Ver como funciona</a>
+        </div>
+      </div>
+
+      
+      <div class="col-lg-5 offset-lg-1">
+        <div class="hero-visual">
+          
+          <p style="font-size:.75rem;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;">Vagas recomendadas para você</p>
+
+          
+          <div class="match-card">
+            <div class="match-icon">💻</div>
+            <div>
+              <div class="title">Estágio em Desenvolvimento</div>
+              <div class="sub">TechCorp · Curitiba, PR</div>
+            </div>
+            <div class="match-pct">94%</div> 
+          </div>
+
+          
+          <div class="match-card">
+            <div class="match-icon">📊</div>
+            <div>
+              <div class="title">Estágio em Análise de Dados</div>
+              <div class="sub">DataLab · Remoto</div>
+            </div>
+            <div class="match-pct">87%</div>
+          </div>
+
+          
+          <div class="match-card">
+            <div class="match-icon">🎨</div>
+            <div>
+              <div class="title">Estágio em UX Design</div>
+              <div class="sub">Studio One · São Paulo, SP</div>
+            </div>
+            <div class="match-pct">81%</div>
+          </div>
+
+          
+          <div style="margin-top:1rem;text-align:center;">
+            <span style="font-size:.78rem;color:rgba(255,255,255,.35);">Atualizado em tempo real · Com base no seu perfil</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- SEÇÃO PROBLEMA: mostra estatísticas e dores dos estudantes -->
+<section class="problema" id="problema">
+  <div class="container">
+
+    
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 text-center fade-up">
+        <div class="section-eyebrow">O Problema</div>
+        <h2 class="section-title">Por que encontrar estágios é tão difícil?</h2>
+        <div class="divider mx-auto"></div>
+        <p class="section-sub mx-auto">Milhares de estudantes se candidatam a vagas desalinhadas com seu perfil — e perdem tempo, energia e oportunidades reais.</p>
+      </div>
+    </div>
+
+    
+    <div class="row g-4 mb-5">
+      <div class="col-sm-6 col-lg-3 fade-up">
+        <div class="stat-box">
+          <div class="stat-num">73%</div>
+          <div class="stat-label">dos estudantes relatam dificuldade em encontrar vagas alinhadas ao seu curso</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 fade-up">
+        <div class="stat-box">
+          <div class="stat-num">5x</div>
+          <div class="stat-label">mais candidaturas são necessárias sem um sistema de filtragem por perfil</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 fade-up">
+        <div class="stat-box">
+          <div class="stat-num">60%</div>
+          <div class="stat-label">dos estagiários não recebem nenhum tipo de acompanhamento profissional</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 fade-up">
+        <div class="stat-box">
+          <div class="stat-num">2 em 3</div>
+          <div class="stat-label">estudantes encerram estágios antes do prazo por desalinhamento de expectativas</div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="row g-5 align-items-start">
+
+      
+      <div class="col-lg-6 fade-up">
+        <h5 style="font-weight:700;margin-bottom:1.25rem;">Principais dores relatadas pelos estudantes</h5>
+
+        
+        <div class="pain-item">
+          <div class="pain-dot"></div>
+          <p><strong>Alta concorrência sem diferenciação</strong> — sem orientação, todos enviam o mesmo currículo genérico para as mesmas vagas.</p>
+        </div>
+        <div class="pain-item">
+          <div class="pain-dot"></div>
+          <p><strong>Vagas desalinhadas com a formação</strong> — plataformas tradicionais não filtram por competências reais do candidato.</p>
+        </div>
+        <div class="pain-item">
+          <div class="pain-dot"></div>
+          <p><strong>Falta de preparação prévia</strong> — a maioria dos estudantes chega a processos seletivos sem orientação sobre entrevistas ou currículo.</p>
+        </div>
+        <div class="pain-item">
+          <div class="pain-dot"></div>
+          <p><strong>Nenhum acompanhamento pós-candidatura</strong> — o estudante perde o controle das suas candidaturas depois de enviá-las.</p>
+        </div>
+      </div>
+
+      
+      <div class="col-lg-5 offset-lg-1 fade-up">
+        
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:2rem;box-shadow:0 2px 12px rgba(0,0,0,.06);">
+          <div style="font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem;">O ciclo do problema</div>
+          <div style="display:flex;flex-direction:column;gap:.6rem;">
+            <div style="background:var(--gray);border-radius:8px;padding:.85rem 1rem;font-size:.9rem;"><strong>1.</strong> Estudante busca estágio em portais genéricos</div>
+            <div style="text-align:center;color:var(--text-muted);font-size:.8rem;">↓</div>
+            <div style="background:var(--gray);border-radius:8px;padding:.85rem 1rem;font-size:.9rem;"><strong>2.</strong> Encontra centenas de vagas sem filtro de perfil</div>
+            <div style="text-align:center;color:var(--text-muted);font-size:.8rem;">↓</div>
+            <div style="background:var(--gray);border-radius:8px;padding:.85rem 1rem;font-size:.9rem;"><strong>3.</strong> Envia currículos sem orientação</div>
+            <div style="text-align:center;color:var(--text-muted);font-size:.8rem;">↓</div>
+            
+            <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:.85rem 1rem;font-size:.9rem;color:#991B1B;"><strong>4.</strong> Não recebe retorno — ou aceita vaga incompatível</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- SEÇÃO SOLUÇÃO: os 4 pilares da plataforma -->
+<section id="solucao">
+  <div class="container">
+
+    
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 text-center fade-up">
+        <div class="section-eyebrow">Nossa Solução</div>
+        <h2 class="section-title">Quatro pilares que mudam a experiência do estágio</h2>
+        <div class="divider mx-auto"></div>
+        <p class="section-sub mx-auto">MatchStage não é mais um portal de vagas. É uma plataforma que coloca o estudante no centro — e entrega compatibilidade, não apenas volume.</p>
+      </div>
+    </div>
+
+    
+    <div class="row g-4">
+
+      
+      <div class="col-md-6 col-lg-3 fade-up">
+        <div class="pilar-card">
+          <div class="pilar-num">Pilar 01</div>
+          <div class="pilar-icon">👤</div>
+          <h5>Perfil do Estudante</h5>
+          <p>Mapeamento completo de habilidades técnicas, soft skills, área de interesse, semestre e disponibilidade para criar um perfil rico e dinâmico.</p>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6 col-lg-3 fade-up">
+        <div class="pilar-card">
+          <div class="pilar-num">Pilar 02</div>
+          <div class="pilar-icon">🤖</div>
+          <h5>Match Inteligente com Vagas</h5>
+          <p>Algoritmo de compatibilidade que cruza o perfil do estudante com requisitos reais das vagas — gerando um índice de match transparente.</p>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6 col-lg-3 fade-up">
+        <div class="pilar-card">
+          <div class="pilar-num">Pilar 03</div>
+          <div class="pilar-icon">🚀</div>
+          <h5>Preparação Profissional</h5>
+          <p>Recursos integrados de orientação: dicas para entrevistas, revisão de currículo, trilhas de desenvolvimento e feedbacks direcionados.</p>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6 col-lg-3 fade-up">
+        <div class="pilar-card">
+          <div class="pilar-num">Pilar 04</div>
+          <div class="pilar-icon">📋</div>
+          <h5>Acompanhamento de Candidaturas</h5>
+          <p>Painel de controle para visualizar em qual etapa está cada candidatura — com notificações e histórico centralizado em um só lugar.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- SEÇÃO BENEFÍCIOS: 6 cards com o que o usuário ganha -->
+<section class="beneficios" id="beneficios">
+  <div class="container">
+
+    
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-6 text-center fade-up">
+        <div class="section-eyebrow">Benefícios</div>
+        <h2 class="section-title">O que muda com a MatchStage</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+    </div>
+
+    
+    <div class="row g-4">
+
+      <div class="col-sm-6 col-lg-4 fade-up">
+        <div class="benefit-card">
+          <div class="icon">🎯</div>
+          <h6>Menos esforço, mais assertividade</h6>
+          <p>Você vê apenas as vagas que fazem sentido para o seu perfil — sem perder horas filtrando resultados irrelevantes.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 fade-up">
+        <div class="benefit-card">
+          <div class="icon">📈</div>
+          <h6>Visibilidade do seu progresso</h6>
+          <p>Acompanhe cada candidatura em tempo real e entenda em qual etapa do processo seletivo você está.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 fade-up">
+        <div class="benefit-card">
+          <div class="icon">🧠</div>
+          <h6>Desenvolvimento contínuo</h6>
+          <p>Receba orientações personalizadas com base nas lacunas identificadas no seu perfil em relação às vagas do seu interesse.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 fade-up">
+        <div class="benefit-card">
+          <div class="icon">🤝</div>
+          <h6>Conexões mais qualificadas</h6>
+          <p>Empresas encontram candidatos que realmente correspondem ao que buscam — benefício para os dois lados.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 fade-up">
+        <div class="benefit-card">
+          <div class="icon">⚡</div>
+          <h6>Processo mais rápido</h6>
+          <p>Com perfil completo e vagas compatíveis, o tempo entre candidatura e aprovação é significativamente menor.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 fade-up">
+        <div class="benefit-card">
+          <div class="icon">🔒</div>
+          <h6>Dados seguros e controlados</h6>
+          <p>Você decide quais informações do seu perfil ficam visíveis e para quais empresas elas são compartilhadas.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- SEÇÃO MAPA DE EMPATIA: 6 quadrantes sobre o estudante -->
+<section class="empatia" id="empatia">
+  <div class="container">
+
+    
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 text-center fade-up">
+        <div class="section-eyebrow">Mapa de Empatia</div>
+        <h2 class="section-title">Quem é o nosso estudante?</h2>
+        
+        <div class="divider mx-auto" style="background:var(--blue-light);"></div>
+        <p class="section-sub mx-auto">Para construir a MatchStage, ouvimos estudantes reais e mapeamos sua realidade em seis dimensões — usando a metodologia do Mapa de Empatia.</p>
+      </div>
+    </div>
+
+    
+    <div class="row g-3">
+
+      
+      <div class="col-md-6 col-lg-4 fade-up">
+        <div class="em-card">
+          <div class="em-label">O que pensa e sente?</div>
+          <h5>Pensamentos e Sentimentos</h5>
+          <ul>
+            <li>Sente insegurança sobre o futuro profissional</li>
+            <li>Tem medo de não estar preparado para o mercado</li>
+            <li>Deseja reconhecimento e uma chance real de crescer</li>
+            <li>Sente que o esforço não está sendo recompensado</li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6 col-lg-4 fade-up">
+        <div class="em-card">
+          <div class="em-label">O que vê?</div>
+          <h5>Ambiente ao Redor</h5>
+          <ul>
+            <li>Colegas que conseguem estágios sem entender como</li>
+            <li>Plataformas com centenas de vagas sem filtros úteis</li>
+            <li>Professores e faculdade com pouco suporte prático</li>
+            <li>Empresas que pedem 2 anos de experiência para estágio</li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6 col-lg-4 fade-up">
+        <div class="em-card">
+          <div class="em-label">O que ouve?</div>
+          <h5>Influências Externas</h5>
+          <ul>
+            <li>"Networking é tudo" — mas não sabe como construí-lo</li>
+            <li>Relatos de processos seletivos longos e sem retorno</li>
+            <li>Conselhos genéricos da família sobre "qualquer vaga"</li>
+            <li>Mercado cobrando habilidades que a faculdade não ensina</li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6 col-lg-4 fade-up">
+        <div class="em-card">
+          <div class="em-label">O que fala e faz?</div>
+          <h5>Comportamentos Observados</h5>
+          <ul>
+            <li>Envia currículos em massa sem personalização</li>
+            <li>Atualiza o LinkedIn sem saber o que colocar</li>
+            <li>Pergunta para amigos como passou em processos</li>
+            <li>Aceita vagas abaixo do esperado por pressão</li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6 col-lg-4 fade-up">
+        <div class="em-card">
+          <div class="em-label">Quais são suas dores?</div>
+          <h5>Dores e Frustrações</h5>
+          <ul>
+            <li>Não saber por que foi reprovado em entrevistas</li>
+            <li>Perder oportunidades por falta de informação</li>
+            <li>Sentir que o currículo não reflete seu potencial</li>
+            <li>Falta de feedback após processos seletivos</li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6 col-lg-4 fade-up">
+        <div class="em-card">
+          <div class="em-label">O que deseja ganhar?</div>
+          <h5>Ganhos e Aspirações</h5>
+          <ul>
+            <li>Um estágio na área certa e no momento certo</li>
+            <li>Clareza sobre quais habilidades desenvolver</li>
+            <li>Reconhecimento do seu esforço e formação</li>
+            <li>Confiança para se posicionar no mercado</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- SEÇÃO CTA: chamada final para o usuário se cadastrar -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="fade-up">
+      <h2>Pronto para encontrar o estágio certo para você?</h2>
+      <p>A MatchStage conecta quem você é com onde você quer chegar.</p>
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+
+        
+        <button onclick="abrirModal()" class="btn-white" style="border:none;cursor:pointer;">
+          ✨ Criar minha conta grátis
+        </button>
+
+        
+        <a href="https://SEU-USUARIO.github.io/SEU-REPOSITORIO" target="_blank" class="btn-outline-white">
+          🌐 Ver o projeto
+        </a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER: rodapé com nome e ano -->
+<footer>
+  <div class="container">
+    
+    <div class="brand">Match<span>Stage</span></div>
+    <div class="tagline">Plataforma Inteligente de Conexão para Estágios</div>
+    <div class="copy">© 2025 MatchStage — Projeto Acadêmico. Todos os direitos reservados.</div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS: necessário para o menu mobile funcionar -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  
+  /* Detecta quando cada seção entra na tela e dispara a animação fade-up */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible'); 
+        observer.unobserve(e.target);     
+      }
+    });
+  }, { threshold: 0.12 });
+
+  
+  /* Coloca todos os elementos .fade-up para serem observados */
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  
+  /* Scroll suave ao clicar em qualquer link de âncora (#problema, #solucao...) */
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href')); 
+      if (target) {
+        e.preventDefault();                                               
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });   
+      }
+    });
+  });
+</script>
+
+
+<!-- MODAL DE CADASTRO: aparece ao clicar em "Cadastrar" -->
+<div class="modal-overlay" id="modalCadastro" role="dialog" aria-modal="true" aria-labelledby="modalTituloEl">
+
+  <div class="modal-box" id="modalBox">
+
+    
+    <button class="modal-fechar" onclick="fecharModal()" aria-label="Fechar cadastro">✕</button>
+
+    
+    <!-- TELA 1: usuário escolhe se é Estagiário ou Empresa -->
+    <div id="tela1">
+      
+      <div class="modal-steps" aria-label="Passo 1 de 2">
+        <div class="modal-step-dot ativo"></div>
+        <div class="modal-step-dot"></div>
+      </div>
+
+      <div class="modal-titulo" id="modalTituloEl">Quem sou eu?</div>
+      <p class="modal-sub">Escolha o seu perfil para personalizarmos o cadastro.</p>
+
+      
+      <div class="choice-grid">
+
+        
+        <div class="choice-card" id="cardEstagiario" onclick="escolherPerfil('estagiario')" role="button" tabindex="0" aria-label="Me cadastrar como Estagiário">
+          <span class="choice-icon">🎓</span>
+          <div class="choice-titulo">Sou Estagiário</div>
+          <div class="choice-desc">Estou na faculdade e procuro vagas de estágio compatíveis com meu perfil.</div>
+        </div>
+
+        
+        <div class="choice-card" id="cardEmpresa" onclick="escolherPerfil('empresa')" role="button" tabindex="0" aria-label="Me cadastrar como Empresa">
+          <span class="choice-icon">🏢</span>
+          <div class="choice-titulo">Sou Empresa</div>
+          <div class="choice-desc">Quero publicar vagas e encontrar os melhores talentos para a minha equipe.</div>
+        </div>
+
+      </div>
+
+      
+      <button class="modal-btn-primary" id="btnContinuar" onclick="irParaTela2()" disabled>
+        Continuar →
+      </button>
+    </div>
+
+    
+    <!-- TELA 2A: formulário de cadastro do estagiário -->
+    <div id="tela2Estagiario" style="display:none;">
+      <div class="modal-steps" aria-label="Passo 2 de 2">
+        <div class="modal-step-dot ativo"></div>
+        <div class="modal-step-dot ativo"></div>
+      </div>
+
+      
+      <button class="modal-btn-voltar" onclick="voltarTela1()">← Voltar</button>
+
+      <div class="modal-titulo">Conte-nos sobre você</div>
+      <p class="modal-sub">Quanto mais completo seu perfil, melhores serão as vagas recomendadas para você.</p>
+
+      <form id="formEstagiario" novalidate>
+
+        
+        <div class="form-row">
+          <div class="form-grupo">
+            <label for="est_nome">Nome <span class="obrig">*</span></label>
+            <input type="text" id="est_nome" placeholder="Ex: Ana" autocomplete="given-name" />
+            <div class="form-erro-msg" id="err_est_nome">Informe seu nome.</div>
+          </div>
+          <div class="form-grupo">
+            <label for="est_sobrenome">Sobrenome <span class="obrig">*</span></label>
+            <input type="text" id="est_sobrenome" placeholder="Ex: Silva" autocomplete="family-name" />
+            <div class="form-erro-msg" id="err_est_sobrenome">Informe seu sobrenome.</div>
+          </div>
+        </div>
+
+        
+        <div class="form-grupo">
+          <label for="est_email">E-mail <span class="obrig">*</span></label>
+          <input type="email" id="est_email" placeholder="seu@email.com" autocomplete="email" />
+          <div class="form-erro-msg" id="err_est_email">Informe um e-mail válido.</div>
+        </div>
+
+        
+        <div class="form-row">
+          <div class="form-grupo">
+            <label for="est_sexo">Sexo <span class="obrig">*</span></label>
+            <select id="est_sexo">
+              <option value="">Selecionar</option>
+              <option value="feminino">Feminino</option>
+              <option value="masculino">Masculino</option>
+              <option value="nao-binario">Não-binário</option>
+              <option value="prefiro-nao-dizer">Prefiro não dizer</option>
+            </select>
+            <div class="form-erro-msg" id="err_est_sexo">Selecione uma opção.</div>
+          </div>
+          <div class="form-grupo">
+            <label for="est_nascimento">Data de nascimento <span class="obrig">*</span></label>
+            <input type="date" id="est_nascimento" autocomplete="bday" />
+            <div class="form-erro-msg" id="err_est_nascimento">Informe sua data de nascimento.</div>
+          </div>
+        </div>
+
+        
+        <div class="form-grupo">
+          <label for="est_curso">Curso <span class="obrig">*</span></label>
+          <select id="est_curso">
+            <option value="">Selecione seu curso</option>
+            <option value="ads">Análise e Desenvolvimento de Sistemas</option>
+            <option value="ciencia-computacao">Ciência da Computação</option>
+            <option value="engenharia-software">Engenharia de Software</option>
+            <option value="engenharia-computacao">Engenharia da Computação</option>
+            <option value="sistemas-informacao">Sistemas de Informação</option>
+            <option value="administracao">Administração</option>
+            <option value="contabilidade">Ciências Contábeis</option>
+            <option value="marketing">Marketing</option>
+            <option value="design">Design</option>
+            <option value="direito">Direito</option>
+            <option value="engenharia-civil">Engenharia Civil</option>
+            <option value="engenharia-mecanica">Engenharia Mecânica</option>
+            <option value="psicologia">Psicologia</option>
+            <option value="comunicacao">Comunicação Social</option>
+            <option value="rh">Gestão de Recursos Humanos</option>
+            <option value="outro">Outro</option>
+          </select>
+          <div class="form-erro-msg" id="err_est_curso">Selecione seu curso.</div>
+        </div>
+
+        
+        <div class="form-row">
+          <div class="form-grupo">
+            <label for="est_semestre">Semestre atual <span class="obrig">*</span></label>
+            <select id="est_semestre">
+              <option value="">Selecionar</option>
+              <option value="1">1º semestre</option>
+              <option value="2">2º semestre</option>
+              <option value="3">3º semestre</option>
+              <option value="4">4º semestre</option>
+              <option value="5">5º semestre</option>
+              <option value="6">6º semestre</option>
+              <option value="7">7º semestre</option>
+              <option value="8">8º semestre</option>
+              <option value="9+">9º ou mais</option>
+            </select>
+            <div class="form-erro-msg" id="err_est_semestre">Selecione o semestre.</div>
+          </div>
+          <div class="form-grupo">
+            <label for="est_turno">Turno</label>
+            <select id="est_turno">
+              <option value="">Selecionar</option>
+              <option value="manha">Manhã</option>
+              <option value="tarde">Tarde</option>
+              <option value="noite">Noite</option>
+              <option value="integral">Integral</option>
+            </select>
+          </div>
+        </div>
+
+        
+        <div class="form-grupo">
+          <label for="est_area">Área de interesse para estágio <span class="obrig">*</span></label>
+          <select id="est_area">
+            <option value="">Selecione uma área</option>
+            <option value="tecnologia">Tecnologia / TI</option>
+            <option value="dados">Análise de Dados / BI</option>
+            <option value="design">Design / UX/UI</option>
+            <option value="marketing">Marketing / Comunicação</option>
+            <option value="financas">Finanças / Contabilidade</option>
+            <option value="rh">Recursos Humanos</option>
+            <option value="juridico">Jurídico</option>
+            <option value="engenharia">Engenharia</option>
+            <option value="administracao">Administração / Gestão</option>
+            <option value="saude">Saúde</option>
+            <option value="educacao">Educação</option>
+            <option value="outro">Outro</option>
+          </select>
+          <div class="form-erro-msg" id="err_est_area">Selecione uma área.</div>
+        </div>
+
+        
+        <div class="form-grupo">
+          <label for="est_senha">Crie sua senha <span class="obrig">*</span></label>
+          <input type="password" id="est_senha" placeholder="Mínimo 8 caracteres" autocomplete="new-password" oninput="verificarForcaSenha(this.value)" />
+          
+          <div class="senha-forca" id="forca_barras">
+            <div class="senha-forca-barra" id="fb1"></div>
+            <div class="senha-forca-barra" id="fb2"></div>
+            <div class="senha-forca-barra" id="fb3"></div>
+            <div class="senha-forca-barra" id="fb4"></div>
+          </div>
+          <div class="senha-forca-texto" id="forca_texto"></div>
+          <div class="form-erro-msg" id="err_est_senha">A senha deve ter pelo menos 8 caracteres.</div>
+        </div>
+
+        
+        <div class="form-check-custom">
+          <input type="checkbox" id="est_termos" />
+          <label for="est_termos">
+            Li e concordo com os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a> da MatchStage.
+          </label>
+        </div>
+
+        
+        <button type="button" class="modal-btn-primary" onclick="submeterEstagiario()">
+          Criar minha conta →
+        </button>
+
+      </form>
+    </div>
+
+    
+    <!-- TELA 2B: formulário de cadastro da empresa -->
+    <div id="tela2Empresa" style="display:none;">
+      <div class="modal-steps" aria-label="Passo 2 de 2">
+        <div class="modal-step-dot ativo"></div>
+        <div class="modal-step-dot ativo"></div>
+      </div>
+
+      <button class="modal-btn-voltar" onclick="voltarTela1()">← Voltar</button>
+
+      <div class="modal-titulo">Conte-nos sobre sua empresa</div>
+      <p class="modal-sub">Essas informações serão exibidas para os candidatos que visualizarem suas vagas.</p>
+
+      <form id="formEmpresa" novalidate>
+
+        
+        <div class="form-grupo">
+          <label for="emp_nome">Nome da empresa <span class="obrig">*</span></label>
+          <input type="text" id="emp_nome" placeholder="Ex: TechCorp Soluções" autocomplete="organization" />
+          <div class="form-erro-msg" id="err_emp_nome">Informe o nome da empresa.</div>
+        </div>
+
+        
+        <div class="form-row">
+          <div class="form-grupo">
+            <label for="emp_area">Área de atuação <span class="obrig">*</span></label>
+            <select id="emp_area">
+              <option value="">Selecionar</option>
+              <option value="tecnologia">Tecnologia</option>
+              <option value="financas">Finanças / Banco</option>
+              <option value="saude">Saúde</option>
+              <option value="educacao">Educação</option>
+              <option value="varejo">Varejo / E-commerce</option>
+              <option value="industria">Indústria / Manufatura</option>
+              <option value="consultoria">Consultoria</option>
+              <option value="marketing-publicidade">Marketing / Publicidade</option>
+              <option value="logistica">Logística / Transporte</option>
+              <option value="juridico">Jurídico</option>
+              <option value="construcao">Construção Civil</option>
+              <option value="agronegocio">Agronegócio</option>
+              <option value="outro">Outro</option>
+            </select>
+            <div class="form-erro-msg" id="err_emp_area">Selecione a área.</div>
+          </div>
+          <div class="form-grupo">
+            <label for="emp_porte">Porte da empresa</label>
+            <select id="emp_porte">
+              <option value="">Selecionar</option>
+              <option value="micro">Micro (até 9 func.)</option>
+              <option value="pequena">Pequena (10–49)</option>
+              <option value="media">Média (50–249)</option>
+              <option value="grande">Grande (250+)</option>
+            </select>
+          </div>
+        </div>
+
+        
+        <div class="form-row">
+          <div class="form-grupo">
+            <label for="emp_cidade">Cidade <span class="obrig">*</span></label>
+            <input type="text" id="emp_cidade" placeholder="Ex: Curitiba" />
+            <div class="form-erro-msg" id="err_emp_cidade">Informe a cidade.</div>
+          </div>
+          <div class="form-grupo">
+            <label for="emp_estado">Estado <span class="obrig">*</span></label>
+            <select id="emp_estado">
+              <option value="">UF</option>
+              <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+              <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+              <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+              <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+              <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+              <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+              <option>SP</option><option>SE</option><option>TO</option>
+            </select>
+            <div class="form-erro-msg" id="err_emp_estado">Selecione o estado.</div>
+          </div>
+        </div>
+
+        
+        <div class="form-grupo">
+          <label for="emp_email">E-mail corporativo <span class="obrig">*</span></label>
+          <input type="email" id="emp_email" placeholder="rh@suaempresa.com.br" autocomplete="email" />
+          <div class="form-erro-msg" id="err_emp_email">Informe um e-mail válido.</div>
+        </div>
+
+        
+        <div class="form-row">
+          <div class="form-grupo">
+            <label for="emp_cnpj">CNPJ</label>
+            <input type="text" id="emp_cnpj" placeholder="00.000.000/0001-00" maxlength="18" oninput="mascaraCNPJ(this)" />
+          </div>
+          <div class="form-grupo">
+            <label for="emp_site">Site da empresa</label>
+            <input type="url" id="emp_site" placeholder="https://suaempresa.com" />
+          </div>
+        </div>
+
+        
+        <div class="form-grupo">
+          <label for="emp_descricao">Sobre a empresa</label>
+          <textarea id="emp_descricao" rows="3" placeholder="Conte brevemente o que sua empresa faz e qual o ambiente de trabalho..." style="resize:vertical;"></textarea>
+        </div>
+
+        
+        <div class="form-grupo">
+          <label for="emp_responsavel">Nome do responsável <span class="obrig">*</span></label>
+          <input type="text" id="emp_responsavel" placeholder="Quem está fazendo o cadastro?" autocomplete="name" />
+          <div class="form-erro-msg" id="err_emp_responsavel">Informe o nome do responsável.</div>
+        </div>
+
+        
+        <div class="form-grupo">
+          <label for="emp_senha">Crie sua senha <span class="obrig">*</span></label>
+          <input type="password" id="emp_senha" placeholder="Mínimo 8 caracteres" autocomplete="new-password" oninput="verificarForcaSenha(this.value)" />
+          <div class="senha-forca" id="forca_barras_emp">
+            <div class="senha-forca-barra" id="fb1e"></div>
+            <div class="senha-forca-barra" id="fb2e"></div>
+            <div class="senha-forca-barra" id="fb3e"></div>
+            <div class="senha-forca-barra" id="fb4e"></div>
+          </div>
+          <div class="senha-forca-texto" id="forca_texto_emp"></div>
+          <div class="form-erro-msg" id="err_emp_senha">A senha deve ter pelo menos 8 caracteres.</div>
+        </div>
+
+        
+        <div class="form-check-custom">
+          <input type="checkbox" id="emp_termos" />
+          <label for="emp_termos">
+            Li e concordo com os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a> da MatchStage.
+          </label>
+        </div>
+
+        
+        <button type="button" class="modal-btn-primary" onclick="submeterEmpresa()">
+          Cadastrar minha empresa →
+        </button>
+
+      </form>
+    </div>
+
+    
+    <!-- TELA 3: mensagem de sucesso após enviar o cadastro -->
+    <div id="telaSucesso" style="display:none;">
+      <div class="modal-sucesso">
+        <div class="sucesso-icon">✅</div>
+        <h3 id="sucessoTitulo">Cadastro realizado!</h3>
+        <p id="sucessoMsg">Bem-vindo(a) à MatchStage. Seu perfil já está ativo e pronto para encontrar as melhores oportunidades.</p>
+        <br>
+        <button class="modal-btn-primary" onclick="fecharModal()" style="max-width:220px;margin:0 auto;">
+          Fechar
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* Guarda se o usuário escolheu "estagiario" ou "empresa" */
+  let perfilEscolhido = null;
+
+  
+  /* Abre o modal e trava o scroll da página */
+  function abrirModal() {
+    document.getElementById('modalCadastro').classList.add('ativo');
+    document.body.style.overflow = 'hidden'; 
+    mostrarTela('tela1');
+    perfilEscolhido = null;
+    document.getElementById('btnContinuar').disabled = true;
+    document.getElementById('cardEstagiario').classList.remove('selecionado');
+    document.getElementById('cardEmpresa').classList.remove('selecionado');
+  }
+
+  
+  /* Fecha o modal e libera o scroll */
+  function fecharModal() {
+    document.getElementById('modalCadastro').classList.remove('ativo');
+    document.body.style.overflow = '';
+  }
+
+  
+  /* Fecha ao clicar fora da caixa branca */
+  document.getElementById('modalCadastro').addEventListener('click', function(e) {
+    if (e.target === this) fecharModal();
+  });
+
+  
+  /* Fecha com a tecla Esc */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') fecharModal();
+  });
+
+  
+  /* Esconde todas as telas e mostra só a que foi pedida */
+  function mostrarTela(id) {
+    ['tela1', 'tela2Estagiario', 'tela2Empresa', 'telaSucesso'].forEach(t => {
+      document.getElementById(t).style.display = t === id ? 'block' : 'none';
+    });
+  }
+
+  
+  /* Marca o card escolhido e habilita o botão Continuar */
+  function escolherPerfil(perfil) {
+    perfilEscolhido = perfil;
+    document.getElementById('cardEstagiario').classList.toggle('selecionado', perfil === 'estagiario');
+    document.getElementById('cardEmpresa').classList.toggle('selecionado', perfil === 'empresa');
+    document.getElementById('btnContinuar').disabled = false;
+  }
+
+  
+  document.querySelectorAll('.choice-card').forEach(card => {
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.click();
+      }
+    });
+  });
+
+  
+  /* Vai para o formulário do perfil escolhido */
+  function irParaTela2() {
+    if (!perfilEscolhido) return;
+    mostrarTela(perfilEscolhido === 'estagiario' ? 'tela2Estagiario' : 'tela2Empresa');
+    
+    document.getElementById('modalBox').scrollTop = 0;
+  }
+
+  
+  /* Volta para a tela de escolha de perfil */
+  function voltarTela1() {
+    mostrarTela('tela1');
+    document.getElementById('modalBox').scrollTop = 0;
+  }
+
+  
+  /* Verifica se o campo está preenchido e mostra erro se não estiver */
+  function validarCampo(id, erroId, validacaoExtra) {
+    const campo = document.getElementById(id);
+    const erro  = document.getElementById(erroId);
+    const valor = campo.value.trim();
+
+    let invalido = !valor;
+    if (!invalido && validacaoExtra) invalido = !validacaoExtra(valor);
+
+    campo.classList.toggle('erro', invalido);
+    erro.classList.toggle('visivel', invalido);
+
+    
+    campo.addEventListener('input', function limpar() {
+      campo.classList.remove('erro');
+      erro.classList.remove('visivel');
+      campo.removeEventListener('input', limpar);
+    }, { once: true });
+
+    return !invalido;
+  }
+
+  /* Checa se o e-mail tem formato válido (x@x.x) */
+  function emailValido(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  
+  /* Valida e envia o formulário do estagiário */
+  function submeterEstagiario() {
+    const ok = [
+      validarCampo('est_nome',       'err_est_nome'),
+      validarCampo('est_sobrenome',  'err_est_sobrenome'),
+      validarCampo('est_email',      'err_est_email',      emailValido),
+      validarCampo('est_sexo',       'err_est_sexo'),
+      validarCampo('est_nascimento', 'err_est_nascimento'),
+      validarCampo('est_curso',      'err_est_curso'),
+      validarCampo('est_semestre',   'err_est_semestre'),
+      validarCampo('est_area',       'err_est_area'),
+      validarCampo('est_senha',      'err_est_senha',      v => v.length >= 8),
+    ].every(Boolean);
+
+    if (!ok) return; 
+
+    if (!document.getElementById('est_termos').checked) {
+      alert('Você precisa aceitar os Termos de Uso para continuar.');
+      return;
+    }
+
+    
+    const dados = {
+      tipo:        'estagiario',
+      nome:        document.getElementById('est_nome').value.trim(),
+      sobrenome:   document.getElementById('est_sobrenome').value.trim(),
+      email:       document.getElementById('est_email').value.trim(),
+      sexo:        document.getElementById('est_sexo').value,
+      nascimento:  document.getElementById('est_nascimento').value,
+      curso:       document.getElementById('est_curso').value,
+      semestre:    document.getElementById('est_semestre').value,
+      turno:       document.getElementById('est_turno').value,
+      area:        document.getElementById('est_area').value,
+      cadastradoEm: new Date().toISOString(),
+    };
+
+    salvarCadastro(dados);
+
+    
+    document.getElementById('sucessoTitulo').textContent = `Olá, ${dados.nome}! 🎉`;
+    document.getElementById('sucessoMsg').textContent =
+      `Seu perfil de estagiário foi criado com sucesso. Em breve você vai receber vagas compatíveis com seu curso de ${document.getElementById('est_curso').options[document.getElementById('est_curso').selectedIndex].text}.`;
+
+    mostrarTela('telaSucesso');
+    document.getElementById('modalBox').scrollTop = 0;
+  }
+
+  
+  /* Valida e envia o formulário da empresa */
+  function submeterEmpresa() {
+    const ok = [
+      validarCampo('emp_nome',        'err_emp_nome'),
+      validarCampo('emp_area',        'err_emp_area'),
+      validarCampo('emp_cidade',      'err_emp_cidade'),
+      validarCampo('emp_estado',      'err_emp_estado'),
+      validarCampo('emp_email',       'err_emp_email',       emailValido),
+      validarCampo('emp_responsavel', 'err_emp_responsavel'),
+      validarCampo('emp_senha',       'err_emp_senha',       v => v.length >= 8),
+    ].every(Boolean);
+
+    if (!ok) return;
+
+    if (!document.getElementById('emp_termos').checked) {
+      alert('Você precisa aceitar os Termos de Uso para continuar.');
+      return;
+    }
+
+    const dados = {
+      tipo:         'empresa',
+      nome:         document.getElementById('emp_nome').value.trim(),
+      area:         document.getElementById('emp_area').value,
+      porte:        document.getElementById('emp_porte').value,
+      cidade:       document.getElementById('emp_cidade').value.trim(),
+      estado:       document.getElementById('emp_estado').value,
+      email:        document.getElementById('emp_email').value.trim(),
+      cnpj:         document.getElementById('emp_cnpj').value.trim(),
+      site:         document.getElementById('emp_site').value.trim(),
+      descricao:    document.getElementById('emp_descricao').value.trim(),
+      responsavel:  document.getElementById('emp_responsavel').value.trim(),
+      cadastradoEm: new Date().toISOString(),
+    };
+
+    salvarCadastro(dados);
+
+    document.getElementById('sucessoTitulo').textContent = `${dados.nome} cadastrada! 🏢`;
+    document.getElementById('sucessoMsg').textContent =
+      `O perfil da sua empresa foi criado com sucesso. Agora você pode publicar vagas e receber candidatos alinhados ao seu perfil.`;
+
+    mostrarTela('telaSucesso');
+    document.getElementById('modalBox').scrollTop = 0;
+  }
+
+  
+  /* Salva os dados no navegador (localStorage) — apenas para demonstração */
+  function salvarCadastro(dados) {
+    try {
+      const existentes = JSON.parse(localStorage.getItem('matchstage_cadastros') || '[]');
+      existentes.push(dados);
+      localStorage.setItem('matchstage_cadastros', JSON.stringify(existentes));
+      console.log('[MatchStage] Cadastro salvo no localStorage:', dados.tipo, dados.email || dados.nome);
+    } catch (e) {
+      console.warn('[MatchStage] localStorage indisponível — cadastro não persistido.');
+    }
+  }
+
+  
+  /* Pinta as 4 barrinhas de acordo com a força da senha digitada */
+  function verificarForcaSenha(senha) {
+    let forca = 0;
+    if (senha.length >= 8)            forca++;
+    if (/[A-Z]/.test(senha))          forca++;
+    if (/[0-9]/.test(senha))          forca++;
+    if (/[^A-Za-z0-9]/.test(senha))   forca++;
+
+    const cores  = ['', '#EF4444', '#F59E0B', '#3B82F6', '#22C55E'];
+    const textos = ['', 'Muito fraca', 'Fraca', 'Boa', 'Forte'];
+
+    
+    for (let i = 1; i <= 4; i++) {
+      const b = document.getElementById('fb' + i);
+      if (b) b.style.background = i <= forca ? cores[forca] : '#E2E8F0';
+    }
+    const txt = document.getElementById('forca_texto');
+    if (txt) txt.textContent = senha.length ? textos[forca] : '';
+    if (txt) txt.style.color = cores[forca];
+
+    
+    for (let i = 1; i <= 4; i++) {
+      const b = document.getElementById('fb' + i + 'e');
+      if (b) b.style.background = i <= forca ? cores[forca] : '#E2E8F0';
+    }
+    const txte = document.getElementById('forca_texto_emp');
+    if (txte) txte.textContent = senha.length ? textos[forca] : '';
+    if (txte) txte.style.color = cores[forca];
+  }
+
+  
+  /* Formata o CNPJ automaticamente enquanto o usuário digita */
+  function mascaraCNPJ(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 14);
+    if (v.length > 12) v = v.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    else if (v.length > 8) v = v.replace(/(\d{2})(\d{3})(\d{3})(\d*)/, '$1.$2.$3/$4');
+    else if (v.length > 5) v = v.replace(/(\d{2})(\d{3})(\d*)/, '$1.$2.$3');
+    else if (v.length > 2) v = v.replace(/(\d{2})(\d*)/, '$1.$2');
+    input.value = v;
+  }
+</script>
+
+</body>
+</html>
